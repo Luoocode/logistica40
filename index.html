@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indicadores Operacionais</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden; /* Impede rolagem */
+      }
+
+      .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-image: url("imagens/plano_fundo.jpg");
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        color: white;
+      }
+
+      .login-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+      }
+
+      .login-container > * {
+        position: relative;
+        z-index: 1;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      input,
+      button {
+        padding: 10px;
+        margin: 5px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+      }
+
+      input {
+        width: 250px;
+      }
+
+      button {
+        background-color: #dc0032;
+        color: white;
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .iframe-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .top-bar {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 10;
+      }
+
+      .top-bar button {
+        background-color: #dc0032;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tela de Login -->
+    <div class="login-container" id="login">
+      <h2>Indicadores Operacionais</h2>
+      <input type="text" id="username" placeholder="Usuário" />
+      <input type="password" id="password" placeholder="Senha" />
+      <button onclick="login()">Entrar</button>
+    </div>
+
+    <!-- Tela do Dashboard (sem iframe inicialmente) -->
+    <div class="iframe-container hidden" id="dashboard">
+      <div class="top-bar">
+        <button onclick="logout()">Fechar</button>
+      </div>
+      <!-- O iframe será criado via JavaScript -->
+      <div id="iframeWrapper"></div>
+    </div>
+
+    <script>
+      function login() {
+        const user = document.getElementById("username").value;
+        const pass = document.getElementById("password").value;
+        if (user === "jadlog" && pass === "adm10226") {
+          document.getElementById("login").classList.add("hidden");
+          document.getElementById("dashboard").classList.remove("hidden");
+
+          // Cria o iframe dinamicamente
+          const iframeWrapper = document.getElementById("iframeWrapper");
+          const iframe = document.createElement("iframe");
+          iframe.title = "control";
+          iframe.allowFullscreen = true;
+          iframe.style.border = "none";
+          iframe.style.width = "100vw";
+          iframe.style.height = "100vh";
+          iframe.src =
+            "https://app.powerbi.com/reportEmbed?reportId=5cfc2360-bec6-4374-97dd-e8ac325e33c1&autoAuth=true&ctid=6add4d0d-0740-4f60-8494-6e2cf984cb38";
+          iframeWrapper.appendChild(iframe);
+        } else {
+          alert("Usuário ou senha incorretos.");
+        }
+      }
+
+      function logout() {
+        document.getElementById("dashboard").classList.add("hidden");
+        document.getElementById("login").classList.remove("hidden");
+
+        // Limpa os campos de login
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+
+        // Remove o iframe
+        const iframeWrapper = document.getElementById("iframeWrapper");
+        iframeWrapper.innerHTML = "";
+
+        // Foca no campo de usuário
+        document.getElementById("username").focus();
+      }
+    </script>
+  </body>
+</html>
